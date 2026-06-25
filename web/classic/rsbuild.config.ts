@@ -10,6 +10,13 @@ const semiUiDir = path.resolve(
   path.dirname(require.resolve('@douyinfe/semi-ui')),
   '../..',
 )
+const semiFoundationDir = path.dirname(
+  require.resolve('@douyinfe/semi-foundation/package.json'),
+)
+// semi-ui uses date-fns v2 via date-fns-tz; the workspace hoists date-fns v4 for default.
+const dateFnsV2Dir = path.dirname(
+  require.resolve('date-fns/package.json', { paths: [semiFoundationDir] }),
+)
 
 export default defineConfig(({ envMode }) => {
   const env = loadEnv({ mode: envMode, prefixes: ['VITE_'] })
@@ -43,6 +50,7 @@ export default defineConfig(({ envMode }) => {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
+        'date-fns': dateFnsV2Dir,
         '@douyinfe/semi-ui/dist/css/semi.css': path.resolve(
           semiUiDir,
           'dist/css/semi.css',
